@@ -1,0 +1,48 @@
+syntax = "proto2";
+
+package PolyVesselProto;
+
+service PolyVessel {
+  rpc Ping (PingHello) returns (VesselUpdate) {}
+}
+
+message TelemetryPacket {
+  required string boatID = 1;  
+  required string codeVersion = 2;
+  
+  required string GPS_lat = 3;
+  required string GPS_lon = 4;
+  required uint32 GPS_speed_mps = 5;
+  required uint32 IMU_heading_deg = 6;
+  required int32 IMU_pitch_deg = 7;
+  required int32 IMU_roll_deg = 8;
+
+  required int32 motor_speed_L = 9;
+  required int32 motor_speed_R = 10;
+
+  required int32 bat_voltage_mV = 11;
+  required int32 bat_current_mA = 12;
+  required int32 bat_temp_degC = 13;
+
+  enum Mode {
+    WAYPOINT = 0;
+    MANUAL = 1;
+  }
+
+  required Mode mode = 14;
+  required int32 max_command_index = 15;
+}
+
+message Command {
+  required uint32 command_index = 1;
+  required string message = 2;
+}
+
+message VesselUpdate {
+  repeated Command commands = 2;
+  optional string message = 3;
+}
+
+message PingHello {
+  required string boatID = 1;
+}
